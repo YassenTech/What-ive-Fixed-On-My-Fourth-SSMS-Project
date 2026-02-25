@@ -1,0 +1,63 @@
+use MyFourthSSMSProject;
+
+select * from FourthSSMSProject
+
+--first im gonna fix the Ghost Spaces (Removes empty spaces in the beginning and end of the word)
+Select TRIM(Country) As FixedCountryTypos From FourthSSMSProject
+
+--i saw alot of NULLS in The UnitPrice Column So instead of allowing them to show up as NULL i made them show up as 0
+SELECT ISNULL(UnitPrice, 0) As FixedUnitPricesThatShowUpAsNULL From FourthSSMSProject
+
+--rounds up lon messy decimal numbers example : 19.99982445359867 and makes it : 19.99
+Select ROUND(UnitPrice, 2) As CleansLongDecimalValues From FourthSSMSProject
+
+--Finds the last day of a month for an order 
+SELECT EOMONTH(UnitPrice) As FindsTheLastDayOfAMonthForAnOrder From FourthSSMSProject
+
+--Finds The First Order A Customer Has Ever Made 
+SELECT MIN(Invoicedate) as FindsTheFirstPurchaseACustomerHasEverMade From FourthSSMSProject
+
+--ranks customer from least to most spent
+select * from FourthSSMSProject ORDER BY UnitPrice Desc
+
+--the opposite of desc
+select * from FourthSSMSProject ORDER BY UnitPrice asc;
+
+--makes everything look the same so description's and countries wont be messy
+Select LOWER(InvoiceDate)
+Description,Country
+From FourthSSMSProject
+
+--makes the stock codes work regardless of how they were written
+SELECT UPPER(StockCode) As MakesStockCodesWorkRegardlessOfHowTheyWereWritten From FourthSSMSProject
+
+--stops the computer from crashing when dividing by 0
+Select UnitPrice / NULLIF(UnitPrice, 0) As StopsComputerFromCrashingWhenDividingBy0 From FourthSSMSProject
+
+--Rounds up all the company value into one big list 
+Select SUM(UnitPrice) As RoundsUpAllCompanyValueIntoOneValue From FourthSSMSProject
+
+--Calculates how long ago an order was placed
+SELECT DATEDIFF(Day, invoicedate, GETDATE()) as HowLongAgoAnOrderWasPlaced from FourthSSMSProject
+
+--turns numbers into whole number
+Select Cast(UnitPrice AS INT) FROM FourthSSMSProject
+
+--checks a list of numbers from a specified column and picks the first number that isnt empty
+Select UnitPrice, COALESCE(UnitPrice, 0) As PicksTheFirstNumberThatIsntEmpty From FourthSSMSProject
+
+--checks if a date is real or not 
+Select TRY_CONVERT(DATE, invoiceDate) As TriesToSeeIfADateIsRealOrARandomWord From FourthSSMSProject
+
+--turns a date into a human style date
+Select Convert(VARCHAR, InvoiceDate, 101) As TurnsADateIntoHumanStyle From FourthSSMSProject
+
+Select CEILING(UnitPrice) As WholeNumbers From FourthSSMSProject
+--asks the pc what date it is right now 
+select getdate();
+--selects a small part of text from a text
+Select substring(StockCode, 1, 3) 
+from fourthssmsproject
+
+--so i made a design with the invoice number and date to stamp it 
+select concat (InvoiceNo,InvoiceDate) As UseThisForTheShippingLabel From fourthssmsproject
